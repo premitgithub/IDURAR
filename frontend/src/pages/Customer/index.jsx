@@ -14,10 +14,10 @@ export default function Customer() {
   const deleteModalLabels = ['name'];
 
   const Labels = {
-    PANEL_TITLE: translate('client'),
-    DATATABLE_TITLE: translate('client_list'),
-    ADD_NEW_ENTITY: translate('add_new_client'),
-    ENTITY_NAME: translate('client'),
+    PANEL_TITLE: translate('USER'),
+    DATATABLE_TITLE: translate('user_list'),
+    ADD_NEW_ENTITY: translate('add_new_user'),
+    ENTITY_NAME: translate('User'),
   };
   const configPage = {
     entity,

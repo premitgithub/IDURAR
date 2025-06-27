@@ -1,3 +1,5 @@
+import {Select} from 'antd';
+import UserForm from '@/forms/UserForm';
 import { useLayoutEffect, useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -85,9 +87,8 @@ function SidePanelTopContent({ config, formElements, withUpload }) {
   );
 }
 
-function FixHeaderPanel({ config }) {
+function FixHeaderPanel({ config,setRole }) {
   const { crudContextAction } = useCrudContext();
-
   const { collapsedBox } = crudContextAction;
 
   const addNewItem = () => {
@@ -96,8 +97,20 @@ function FixHeaderPanel({ config }) {
 
   return (
     <Row gutter={8}>
-      <Col className="gutter-row" span={21}>
+      <Col className="gutter-row" span={15}>
         <SearchItem config={config} />
+      </Col>
+      <Col className="gutter-row" span={6}>
+        <Select
+          defaultValue="Student"
+          style={{ width: '100%' }}
+          onChange={(value) => setRole(value)}
+        >
+          <Select.Option value="Student">Student</Select.Option>
+          <Select.Option value="Faculty">Faculty</Select.Option>
+          <Select.Option value="COE">COE</Select.Option>
+          <Select.Option value="Finance">Finance</Select.Option>
+        </Select>
       </Col>
       <Col className="gutter-row" span={3}>
         <Button onClick={addNewItem} block={true} icon={<PlusOutlined />}></Button>
@@ -108,7 +121,7 @@ function FixHeaderPanel({ config }) {
 
 function CrudModule({ config, createForm, updateForm, withUpload = false }) {
   const dispatch = useDispatch();
-
+  const [role,setRole] = useState('Student');
   useLayoutEffect(() => {
     dispatch(crud.resetState());
   }, []);
@@ -116,12 +129,12 @@ function CrudModule({ config, createForm, updateForm, withUpload = false }) {
   return (
     <CrudLayout
       config={config}
-      fixHeaderPanel={<FixHeaderPanel config={config} />}
+      fixHeaderPanel={<FixHeaderPanel config={config} setRole={setRole}/>}
       sidePanelBottomContent={
-        <CreateForm config={config} formElements={createForm} withUpload={withUpload} />
+        <CreateForm config={config} formElements={<UserForm role={role}/>} withUpload={withUpload} />
       }
       sidePanelTopContent={
-        <SidePanelTopContent config={config} formElements={updateForm} withUpload={withUpload} />
+        <SidePanelTopContent config={config} formElements={<UserForm role={role}/>} withUpload={withUpload} />
       }
     >
       <DataTable config={config} />
